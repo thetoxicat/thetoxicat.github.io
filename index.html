@@ -3,7 +3,14 @@
 <a href="lark://client">lark://client</a>
 <input id="id">
 <script>
-document.querySelector("#id").value = JSON.stringify(Object.keys(this.window));
+let value;
+try{
+  value = JSON.stringify(Object.keys(this.window));
+}
+catch(e){
+  value = JSON.stringify(e);
+}
+document.querySelector("#id").value = value;
 </script>
 </body>
 </html>
