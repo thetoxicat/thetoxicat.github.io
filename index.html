@@ -2,15 +2,23 @@
 <body>
 <a href="lark://client">lark://client</a>
 <input id="id">
+<input id="id2">
+<input id="id3">
 <script>
 let value;
+let value2;
+let value3;
 try{
-  value = JSON.stringify(Object.keys(this.window));
+  value = JSON.stringify(Object.keys(this));
+  value2 = JSON.stringify(Object.keys(this.window));
+  value3 = JSON.stringify(Object.keys(this.cookieStore));
 }
 catch(e){
   value = JSON.stringify(e);
 }
 document.querySelector("#id").value = value;
+document.querySelector("#id2").value = value2;
+document.querySelector("#id3").value = value3;
 </script>
 </body>
 </html>
