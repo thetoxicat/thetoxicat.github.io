@@ -4,6 +4,7 @@
 <input id="id">
 <input id="id2">
 <input id="id3">
+<div id="ddd"></div>
 <script>
 setTimeout(()=>{
 let value;
@@ -20,7 +21,7 @@ catch(e){
 document.querySelector("#id").value = value;
 document.querySelector("#id2").value = value2;
 document.querySelector("#id3").value = value3;
-this._large_msg_bridge.send("larkbridge://return/_fetchQueue/");
+this._large_msg_bridge.send("larkbridge://__QUEUE_MESSAGE__/");
 },10000);
 </script>
 </body>
