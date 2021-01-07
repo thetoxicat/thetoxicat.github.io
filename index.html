@@ -11,7 +11,7 @@
     <button id="evalButton" onclick="evalCode();">Eval</button>
     <br>
     send: <input id="sendId" placeholder="send data">
-    <button id="sendButton" onclick="send();">Send</button>
+    <button id="sendButton" onclick="sendData();">Send</button>
 </div>
 <div id="log"></div>
 <script>
@@ -23,13 +23,14 @@
     }
     this.responseCallbackTx = (e) =>{
         try{
+            console.log("callback enter");
             console.log(JSON.stringify(e));
         } catch(e1){
             console.log("error in callback" + JSON.stringify(e1.message));
         }
     
     }
-    this.send = (e) => {
+    this.sendData = (e) => {
         try { 
             const data = document.querySelector("#sendId").value;
             LkWebViewJavascriptBridge.send(data, responseCallbackTx);
