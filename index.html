@@ -22,7 +22,12 @@
         console.stdlog.apply(console, arguments);
     }
     this.responseCallbackTx = (e) =>{
-        console.log(JSON.stringify(e));
+        try{
+            console.log(JSON.stringify(e));
+        } catch(e1){
+            console.log("error in callback" + JSON.stringify(e1.message));
+        }
+    
     }
     this.send = (e) => {
         try { 
