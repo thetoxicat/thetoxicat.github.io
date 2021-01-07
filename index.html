@@ -1,15 +1,17 @@
 <html>
 <body>
-<a href="lark://client">lark://client</a>
-<input id="id">
-<input id="id2">
-<input id="id3">
 <div id="ddd2">
-<br>
-command: <input id="cmd" placeholder="larkbridge://">
-<button id="sendbtn" onclick="send();">Send</button>
-<button id="printLogs" onclick="printLogs();">Logs</button>
-<button id="clearLogs" onclick="clearLogs();">Clear</button>
+    <button id="printLogs" onclick="printLogs();">Logs</button>
+    <button id="clearLogs" onclick="clearLogs();">Clear</button>
+    <br>
+    command: <input id="cmd" placeholder="larkbridge://">
+    <button id="sendbtn" onclick="send();">Send</button>
+    <br>
+    eval: <input id="evalId" placeholder="eval code">
+    <button id="evalButton" onclick="evalCode();">Eval</button>
+    <br>
+    send: <input id="sendId" placeholder="send data">
+    <button id="sendButton" onclick="send();">Send</button>
 </div>
 <div id="log"></div>
 <script>
@@ -19,41 +21,42 @@ command: <input id="cmd" placeholder="larkbridge://">
         console.logs.push(Array.from(arguments));
         console.stdlog.apply(console, arguments);
     }
-setTimeout(()=>{
-let value;
-let value2;
-let value3;
-try{
-  value = JSON.stringify(Object.keys(this._large_msg_bridge));
-  value2 = JSON.stringify(Object.keys(this.window));
-  value3 = JSON.stringify(Object.keys(this.LkWebViewJavascriptBridge));
-}
-catch(e){
-  value = JSON.stringify(e);
-}
-document.querySelector("#id").value = value;
-document.querySelector("#id2").value = value2;
-document.querySelector("#id3").value = value3;
-//this._large_msg_bridge.send("larkbridge://return/_fetchQueue/last_one/");
-},10000);
-this.clearLogs = (e) =>{
-    document.querySelector("#log").innerHTML = "";
-}
-this.printLogs = (e) => {
-    let result = "";
-    for(let current in console.logs){
-        result += console.logs[current] +"<br>"
+    this.responseCallbackTx = (e) =>{
+        console.log(JSON.stringify(e));
     }
-    let elem = document.querySelector("#log");
-    elem.innerHTML = result;
-}
-this.send = (e) => {
-    try{
-        this._large_msg_bridge.send(document.querySelector('#cmd').value);
-    } catch(e){
-        document.querySelector("#log").innerHTML += JSON.stringify(e.message) + "<br>";
+    this.send = (e) => {
+        try { 
+            const data = document.querySelector("evalId").value;
+            LkWebViewJavascriptBridge.send(data, responseCallbackTx);
+        } catch(e1){
+            console.log("error on send: " + JSON.stringify(e1.message));
+        }
     }
-}
+    this.evalCode = (e) => {
+        try {
+            eval(document.querySelector("evalId").value);
+        } catch(e1){
+            console.log("error on eval: " + JSON.stringify(e1.message));
+        }
+    }
+    this.clearLogs = (e) =>{
+        document.querySelector("#log").innerHTML = "";
+    }
+    this.printLogs = (e) => {
+        let result = "";
+        for(let current in console.logs){
+            result += console.logs[current] +"<br>"
+        }
+        let elem = document.querySelector("#log");
+        elem.innerHTML = result;
+    }
+    this.send = (e) => {
+        try{
+            this._large_msg_bridge.send(document.querySelector('#cmd').value);
+        } catch(e1){
+            console.log("error on send: " + JSON.stringify(e1.message));
+        }
+    }
 </script>
 </body>
 </html>
